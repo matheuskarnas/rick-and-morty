@@ -1,12 +1,24 @@
+import * as S from "./styles";
+
 import { useState } from "react";
 import { usePage } from "../../hooks/usePage";
 import { CardOfCharacter } from "../CardOfCharacter";
+import { Pagination } from "../Pagination";
 
 export const CharacterList = () => {
-	const [inputData, setInputData] = useState<number>();
 	const [pageNumber, setPageNumber] = useState(1);
 	const { data, isLoading, error } = usePage(pageNumber);
-	console.log("CharacterList", pageNumber, data);
+
+	function handleSubmit(newPage?: number) {
+		if (!newPage) {
+			return;
+		}
+
+		if (data && (1 > newPage || newPage > data.info.pages)) {
+			return alert(`Insira um valor entre 1 e ${data.info.pages}`);
+		}
+		setPageNumber(newPage);
+	}
 
 	if (isLoading) {
 		return <h1>Loading...</h1>;
@@ -16,34 +28,18 @@ export const CharacterList = () => {
 		return <h1>Error</h1>;
 	}
 
-	function handleSubmit() {
-		if (!inputData) {
-			return alert("insira um valor");
-		}
-
-		if (data && (1 > inputData || inputData > data.info.pages)) {
-			return alert(`Insira um valor entre 1 e ${data.info.pages}`);
-		}
-		setPageNumber(inputData);
-	}
-
 	return (
-		<form>
-			<input
-				type='number'
-				onChange={e => setInputData(Number(e.target.value))}
+		<>
+			<S.Grid>
+				{data?.results.map(character => (
+					<CardOfCharacter key={character.id} character={character} />
+				))}
+			</S.Grid>
+			<Pagination
+				info={data?.info}
+				currentPage={pageNumber}
+				handleSubmit={handleSubmit}
 			/>
-			<input
-				type='submit'
-				value='Submit'
-				onClick={e => {
-					e.preventDefault();
-					handleSubmit();
-				}}
-			/>
-			{data?.results.map(character => (
-				<CardOfCharacter key={character.id} character={character} />
-			))}
-		</form>
+		</>
 	);
 };
