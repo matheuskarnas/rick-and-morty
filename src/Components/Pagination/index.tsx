@@ -22,7 +22,6 @@ export const Pagination = ({
 	currentPage
 }: PaginationProps) => {
 	const [inputData, setInputData] = useState<number>();
-	console.log(`Pagination`, info);
 
 	function handleEnter(e: React.KeyboardEvent<HTMLInputElement>) {
 		if (e.key === "Enter") {
