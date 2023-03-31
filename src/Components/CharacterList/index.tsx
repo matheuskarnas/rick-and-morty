@@ -1,23 +1,62 @@
 import * as S from "./styles";
 
 import { useState } from "react";
-import { usePage } from "../../hooks/usePage";
+import { useFind } from "../../hooks/useFind";
 import { CardOfCharacter } from "../CardOfCharacter";
+import { FindCharacter } from "../FindCharacter";
 import { Pagination } from "../Pagination";
+import { useRouter } from "next/router";
 
-export const CharacterList = () => {
-	const [pageNumber, setPageNumber] = useState(1);
-	const { data, isLoading, error } = usePage(pageNumber);
+type CharacterListProps = {
+	slug: string;
+};
+
+function getCurrentPage(slug: string) {
+	const index = slug.indexOf("page=");
+	const finalIndex = slug.indexOf("&", index);
+
+	if (index === -1) {
+		return 1;
+	}
+
+	if (index !== -1 && finalIndex !== -1) {
+		const currentPage = Number(slug.substring(index + 5, finalIndex));
+		return currentPage;
+	}
+
+	const currentPage = Number(slug.substring(index + 5, slug.length));
+	return currentPage;
+}
+
+export const CharacterList = ({ slug }: CharacterListProps) => {
+	const [currentPage, setCurrentPage] = useState(getCurrentPage(slug));
+	const [filter, setFilter] = useState(slug);
+	const { data, isLoading, error } = useFind(slug);
+	const router = useRouter();
 
 	function handleSubmit(newPage?: number) {
 		if (!newPage) {
 			return;
 		}
 
+		setCurrentPage(newPage);
+
 		if (data && (1 > newPage || newPage > data.info.pages)) {
 			return alert(`Insira um valor entre 1 e ${data.info.pages}`);
 		}
-		setPageNumber(newPage);
+
+		const index = slug.indexOf("page=");
+
+		if (index === -1) {
+			if (slug.indexOf("/?") !== -1) {
+				router.push(slug.replace(`/?`, `/?page=${newPage}&`));
+				return;
+			}
+			router.push(slug.replace(`/`, `/?page=${newPage}`));
+			return;
+		}
+
+		router.push(slug.replace(`page=${currentPage}`, `page=${newPage}`));
 	}
 
 	if (isLoading) {
@@ -30,16 +69,17 @@ export const CharacterList = () => {
 
 	return (
 		<>
+			<FindCharacter slug={slug} />
+			<Pagination
+				info={data?.info}
+				currentPage={currentPage}
+				handleSubmit={handleSubmit}
+			/>
 			<S.Grid>
 				{data?.results.map(character => (
 					<CardOfCharacter key={character.id} character={character} />
 				))}
 			</S.Grid>
-			<Pagination
-				info={data?.info}
-				currentPage={pageNumber}
-				handleSubmit={handleSubmit}
-			/>
 		</>
 	);
 };
