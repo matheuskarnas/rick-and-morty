@@ -1,4 +1,3 @@
-import { useState } from "react";
 import * as S from "./styles";
 
 type PageInfo =
@@ -43,7 +42,6 @@ export const Pagination = ({
 			</button>
 			<input
 				defaultValue={currentPage}
-				// value={currentPage}
 				onKeyDown={handleEnter}
 				type='number'
 				onChange={e => setInputData(Number(e.target.value))}
