@@ -1,5 +1,4 @@
 type FindCharacterProps = {
-	// handleSubmit: () => void;
 	slug: string;
 };
 

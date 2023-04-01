@@ -3,7 +3,6 @@ import * as S from "./styles";
 import { useState } from "react";
 import { useFind } from "../../hooks/useFind";
 import { CardOfCharacter } from "../CardOfCharacter";
-import { FindCharacter } from "../FindCharacter";
 import { Pagination } from "../Pagination";
 import { useRouter } from "next/router";
 
@@ -30,7 +29,6 @@ function getCurrentPage(slug: string) {
 
 export const CharacterList = ({ slug }: CharacterListProps) => {
 	const [currentPage, setCurrentPage] = useState(getCurrentPage(slug));
-	const [filter, setFilter] = useState(slug);
 	const { data, isLoading, error } = useFind(slug);
 	const router = useRouter();
 
@@ -69,7 +67,6 @@ export const CharacterList = ({ slug }: CharacterListProps) => {
 
 	return (
 		<>
-			<FindCharacter slug={slug} />
 			<Pagination
 				info={data?.info}
 				currentPage={currentPage}
