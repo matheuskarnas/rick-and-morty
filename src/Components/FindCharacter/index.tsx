@@ -4,9 +4,17 @@ type FindCharacterProps = {
 };
 
 export const FindCharacter = ({ slug }: FindCharacterProps) => {
-	// function inputInitialValue(name: string) {
+	function inputInitialValue(inputName: string) {
+		const index = slug.indexOf(`${inputName}=`);
 
-	// }
+		if (index === -1) return undefined;
+
+		const finalIndex = slug.indexOf("&", index);
+
+		if (finalIndex === -1) return slug.slice(index + inputName.length + 1);
+
+		return slug.slice(index + inputName.length + 1, finalIndex);
+	}
 
 	function inputIsCheck(name: string, value: string) {
 		const index = slug.indexOf(`${name}=${value}`);
@@ -22,7 +30,8 @@ export const FindCharacter = ({ slug }: FindCharacterProps) => {
 						type='text'
 						name='name'
 						id='name'
-						// defaultValue={inputInitialValue("name")}
+						defaultValue={inputInitialValue("name")}
+						placeholder='Nome'
 					/>
 				</fieldset>
 				<input type='submit' />
@@ -105,11 +114,23 @@ export const FindCharacter = ({ slug }: FindCharacterProps) => {
 				</fieldset>
 				<fieldset>
 					<label htmlFor='type'>Tipo: </label>
-					<input type='text' name='type' id='type' />
+					<input
+						type='text'
+						name='type'
+						id='type'
+						defaultValue={inputInitialValue("type")}
+						placeholder='Tipo'
+					/>
 				</fieldset>
 				<fieldset>
-					<label htmlFor='species'>Especie</label>
-					<input type='text' name='species' id='species' />
+					<label htmlFor='species'>Especie: </label>
+					<input
+						type='text'
+						name='species'
+						id='species'
+						defaultValue={inputInitialValue("species")}
+						placeholder='Especie'
+					/>
 				</fieldset>
 			</form>
 		</div>
