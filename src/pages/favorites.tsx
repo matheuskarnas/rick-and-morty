@@ -1,3 +1,4 @@
+import { CardOfCharacter } from "@/Components/CardOfCharacter";
 import { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
 
@@ -24,6 +25,23 @@ export default function Favorites() {
 		}
 	};
 
+	const addNewFavorite = (id: number) => {
+		const newArr = favoritesCharactersCache || [];
+		newArr.push(id);
+		localStorage.setItem("favoritesCharacters", JSON.stringify(newArr));
+		getCacheDate();
+	};
+
+	const removeFavorite = (id: number) => {
+		const newArr = favoritesCharactersCache || [];
+		const index = newArr.indexOf(id);
+		if (index > -1) {
+			newArr.splice(index, 1);
+			localStorage.setItem("favoritesCharacters", JSON.stringify(newArr));
+		}
+		getCacheDate();
+	};
+
 	useEffect(() => {
 		makeString();
 	}, [favoritesCharactersCache]);
@@ -46,7 +64,15 @@ export default function Favorites() {
 			{!data || data?.length === 0 ? (
 				<div>sem personagens salvos</div>
 			) : (
-				data?.map(character => <div key={character.id}>{character.name}</div>)
+				data?.map(character => (
+					<CardOfCharacter
+						key={character.id}
+						character={character}
+						favoritesCharactersCache={favoritesCharactersCache}
+						addNewFavorite={addNewFavorite}
+						removeFavorite={removeFavorite}
+					/>
+				))
 			)}
 		</>
 	);
