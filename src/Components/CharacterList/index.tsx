@@ -1,6 +1,6 @@
 import * as S from "./styles";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFind } from "../../hooks/useFind";
 import { CardOfCharacter } from "../CardOfCharacter";
 import { Pagination } from "../Pagination";
@@ -28,6 +28,9 @@ function getCurrentPage(slug: string) {
 }
 
 export const CharacterList = ({ slug }: CharacterListProps) => {
+	const [favoritesCharactersCache, setFavoritesCharactersCache] = useState<
+		number[]
+	>([]);
 	const [currentPage, setCurrentPage] = useState(getCurrentPage(slug));
 	const { data, isLoading, error } = useFind(slug);
 	const router = useRouter();
@@ -57,6 +60,37 @@ export const CharacterList = ({ slug }: CharacterListProps) => {
 		router.push(slug.replace(`page=${currentPage}`, `page=${newPage}`));
 	}
 
+	const getCacheDate = () => {
+		const response = localStorage.getItem("favoritesCharacters");
+		if (response) {
+			const responseArray = JSON.parse(response);
+			setFavoritesCharactersCache(responseArray);
+		} else {
+			setFavoritesCharactersCache([]);
+		}
+	};
+
+	const addNewFavorite = (id: number) => {
+		const newArr = favoritesCharactersCache || [];
+		newArr.push(id);
+		localStorage.setItem("favoritesCharacters", JSON.stringify(newArr));
+		getCacheDate();
+	};
+
+	const removeFavorite = (id: number) => {
+		const newArr = favoritesCharactersCache || [];
+		const index = newArr.indexOf(id);
+		if (index > -1) {
+			newArr.splice(index, 1);
+			localStorage.setItem("favoritesCharacters", JSON.stringify(newArr));
+		}
+		getCacheDate();
+	};
+
+	useEffect(() => {
+		getCacheDate();
+	}, []);
+
 	if (isLoading) {
 		return <h1>Loading...</h1>;
 	}
@@ -74,7 +108,13 @@ export const CharacterList = ({ slug }: CharacterListProps) => {
 			/>
 			<S.Grid>
 				{data?.results.map(character => (
-					<CardOfCharacter key={character.id} character={character} />
+					<CardOfCharacter
+						key={character.id}
+						character={character}
+						favoritesCharactersCache={favoritesCharactersCache}
+						addNewFavorite={addNewFavorite}
+						removeFavorite={removeFavorite}
+					/>
 				))}
 			</S.Grid>
 		</>
