@@ -2,6 +2,7 @@ import Head from "next/head";
 import { CharacterList } from "@/Components/CharacterList";
 import { GetServerSideProps } from "next";
 import { FindCharacter } from "@/Components/FindCharacter";
+import { NavBar } from "@/Components/NavBar";
 
 type HomeProps = {
 	slug: string;
@@ -19,6 +20,7 @@ export default function Home({ slug }: HomeProps) {
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
+			<NavBar />
 			<FindCharacter slug={slug} />
 			<CharacterList slug={slug} />
 		</>

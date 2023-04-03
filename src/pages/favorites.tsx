@@ -1,6 +1,8 @@
 import { CardOfCharacter } from "@/Components/CardOfCharacter";
+import { NavBar } from "@/Components/NavBar";
 import { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
+import * as S from "../Components/CharacterList/styles";
 
 export default function Favorites() {
 	const [favoritesCharactersCache, setFavoritesCharactersCache] = useState<
@@ -60,19 +62,22 @@ export default function Favorites() {
 
 	return (
 		<>
-			<h1>oi</h1>;
+			<NavBar />
+			<h1>Favoritos</h1>;
 			{!data || data?.length === 0 ? (
 				<div>sem personagens salvos</div>
 			) : (
-				data?.map(character => (
-					<CardOfCharacter
-						key={character.id}
-						character={character}
-						favoritesCharactersCache={favoritesCharactersCache}
-						addNewFavorite={addNewFavorite}
-						removeFavorite={removeFavorite}
-					/>
-				))
+				<S.Grid>
+					{data?.map(character => (
+						<CardOfCharacter
+							key={character.id}
+							character={character}
+							favoritesCharactersCache={favoritesCharactersCache}
+							addNewFavorite={addNewFavorite}
+							removeFavorite={removeFavorite}
+						/>
+					))}
+				</S.Grid>
 			)}
 		</>
 	);

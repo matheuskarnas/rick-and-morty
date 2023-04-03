@@ -33,32 +33,40 @@ export const Pagination = ({
 
 	return (
 		<S.Wrapper>
-			<button disabled={currentPage <= 2} onClick={() => handleSubmit(1)}>
-				{"<<"}
-			</button>
-			<button
-				disabled={currentPage === 1}
-				onClick={() => handleSubmit(currentPage - 1)}>
-				{"<"}
-			</button>
-			<input
-				defaultValue={currentPage}
-				onKeyDown={handleEnter}
-				type='number'
-				onChange={e => setInputData(Number(e.target.value))}
-			/>
-			<h5>of {info?.pages}</h5>
-			<button onClick={() => handleSubmit(inputData)}>Pesquisar</button>
-			<button
-				disabled={currentPage === info.pages}
-				onClick={() => handleSubmit(currentPage + 1)}>
-				{">"}
-			</button>
-			<button
-				disabled={currentPage >= info?.pages - 1}
-				onClick={() => handleSubmit(info.pages)}>
-				{">>"}
-			</button>
+			<S.Top>
+				<button disabled={currentPage <= 2} onClick={() => handleSubmit(1)}>
+					{"<<"}
+				</button>
+				<button
+					disabled={currentPage === 1}
+					onClick={() => handleSubmit(currentPage - 1)}>
+					{"<"}
+				</button>
+			</S.Top>
+			<S.MidPagination>
+				<input
+					defaultValue={currentPage}
+					onKeyDown={handleEnter}
+					type='number'
+					onChange={e => setInputData(Number(e.target.value))}
+				/>
+				<h5>{info?.pages}</h5>
+			</S.MidPagination>
+			<S.MidSubmit>
+				<button onClick={() => handleSubmit(inputData)}>Find</button>
+			</S.MidSubmit>
+			<S.Bottom>
+				<button
+					disabled={currentPage === info.pages}
+					onClick={() => handleSubmit(currentPage + 1)}>
+					{">"}
+				</button>
+				<button
+					disabled={currentPage >= info?.pages - 1}
+					onClick={() => handleSubmit(info.pages)}>
+					{">>"}
+				</button>
+			</S.Bottom>
 		</S.Wrapper>
 	);
 };

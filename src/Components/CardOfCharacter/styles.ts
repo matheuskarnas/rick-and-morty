@@ -21,6 +21,7 @@ export const InformationCharacter = styled.main`
 	flex-direction: column;
 	align-items: center;
 	margin-left: 1rem;
+	margin-top: 1rem;
 	h1 {
 		font-size: 1.15rem;
 	}
@@ -29,4 +30,13 @@ export const InformationCharacter = styled.main`
 		font-size: 0.55rem;
 		line-height: 0.75rem;
 	}
+`;
+
+export const Button = styled.button`
+	margin: 0.5rem 0;
+	padding: 0.25rem 0.5rem;
+	background-color: #e89ac7;
+	color: black;
+	border: 0;
+	border-radius: 0.5rem;
 `;

@@ -29,24 +29,24 @@ export const CardOfCharacter = ({
 				alt={`Imagem do personagem ${character.name}`}
 			/>
 
-			{favoritesCharactersCache.indexOf(character.id) === -1 ? (
-				<button
-					onClick={() => {
-						addNewFavorite(character.id);
-					}}>
-					Add
-				</button>
-			) : (
-				<button
-					onClick={() => {
-						removeFavorite(character.id);
-					}}>
-					Remove
-				</button>
-			)}
-
 			<S.InformationCharacter>
 				<h1>{character.name}</h1>
+
+				{favoritesCharactersCache.indexOf(character.id) === -1 ? (
+					<S.Button
+						onClick={() => {
+							addNewFavorite(character.id);
+						}}>
+						Favoritar
+					</S.Button>
+				) : (
+					<S.Button
+						onClick={() => {
+							removeFavorite(character.id);
+						}}>
+						Remover
+					</S.Button>
+				)}
 
 				<div>
 					<h2>Especie: {character.species}</h2>
