@@ -10,7 +10,6 @@ export default function Favorites() {
 	>([]);
 	const [favorites, setFavorites] = useState("");
 	const { data, isLoading, error } = useFavorites(favorites);
-	console.log("Favorites", data);
 
 	function makeString() {
 		const newString = favoritesCharactersCache.join();
@@ -53,7 +52,13 @@ export default function Favorites() {
 	}, []);
 
 	if (isLoading) {
-		return <h1>Loading...</h1>;
+		return (
+			<>
+				<NavBar />
+				<h1>Favoritos</h1>
+				<h1>Loading...</h1>
+			</>
+		);
 	}
 
 	if (error) {
@@ -63,12 +68,12 @@ export default function Favorites() {
 	return (
 		<>
 			<NavBar />
-			<h1>Favoritos</h1>;
-			{!data || data?.length === 0 ? (
+			<h1>Favoritos</h1>
+			{!data || data.length === 0 ? (
 				<div>sem personagens salvos</div>
 			) : (
 				<S.Grid>
-					{data?.map(character => (
+					{data.map(character => (
 						<CardOfCharacter
 							key={character.id}
 							character={character}
