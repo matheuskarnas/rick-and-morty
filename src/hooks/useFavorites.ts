@@ -18,7 +18,7 @@ async function fetchFavorites(favorites: string): Promise<useQueryResponse> {
 		return [];
 	}
 	const data = axios
-		.get(`https://rickandmortyapi.com/api/character/${favorites}`)
+		.get(`https://rickandmortyapi.com/api/character/${favorites},`)
 		.then(response => response.data);
 
 	return data;
